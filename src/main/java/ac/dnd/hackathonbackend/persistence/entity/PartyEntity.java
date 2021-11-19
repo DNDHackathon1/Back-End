@@ -44,6 +44,7 @@ public class PartyEntity extends BaseEntity {
     private LocalDateTime endTime;
 
     @Column(columnDefinition = "boolean default true")
+    @NotNull
     private Boolean active = true;
 
     @Builder
