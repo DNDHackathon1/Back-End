@@ -43,12 +43,16 @@ public class PartyEntity extends BaseEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(columnDefinition = "boolean default true")
+    private Boolean active = true;
+
     @Builder
-    public PartyEntity(String title, String contents, Integer goalTime, LocalDateTime startTime, LocalDateTime endTime) {
+    public PartyEntity(String title, String contents, Integer goalTime, LocalDateTime startTime, LocalDateTime endTime, Boolean active) {
         this.title = title;
         this.contents = contents;
         this.goalTime = goalTime;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.active = active;
     }
 }
