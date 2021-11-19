@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Message {
-    private Object data;
     private String message;
+    private Object data;
 
     public Message(Object result, String message){
         this.data = result;
