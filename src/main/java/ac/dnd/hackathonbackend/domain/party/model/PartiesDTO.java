@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class PartiesByActiveDTO {
+public class PartiesDTO {
     private List<PartyReadDTO> parties;
 
-    public PartiesByActiveDTO(List<PartyEntity> parties) {
+    public PartiesDTO(List<PartyEntity> parties) {
         this.parties = parties.stream().map(PartyReadDTO::fromEntity).collect(Collectors.toList());
     }
 }

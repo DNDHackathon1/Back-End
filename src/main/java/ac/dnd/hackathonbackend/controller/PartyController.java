@@ -37,7 +37,7 @@ public class PartyController {
         }
     }
 
-    @ApiOperation("참여 불가능 파티 리스트 가져오기")
+    @ApiOperation("참여 불가능 가티 리스트 가져오기")
     @GetMapping("/not")
     public ResponseEntity getPartiesByNotActzive() {
         try{

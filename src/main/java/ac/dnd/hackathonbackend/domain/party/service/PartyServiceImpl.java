@@ -1,7 +1,6 @@
 package ac.dnd.hackathonbackend.domain.party.service;
 
-import ac.dnd.hackathonbackend.domain.party.model.PartiesByActiveDTO;
-import ac.dnd.hackathonbackend.domain.party.model.PartiesByNotActiveDTO;
+import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
@@ -35,14 +34,14 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
-    public PartiesByActiveDTO getListByActive() {
+    public PartiesDTO getListByActive() {
         List<PartyEntity> parties = partyRepository.findAllByActive(true);
-        return new PartiesByActiveDTO(parties);
+        return new PartiesDTO(parties);
     }
 
     @Override
-    public PartiesByNotActiveDTO getListByNotActive() {
+    public PartiesDTO getListByNotActive() {
         List<PartyEntity> parties = partyRepository.findAllByActive(false);
-        return new PartiesByNotActiveDTO(parties);
+        return new PartiesDTO(parties);
     }
 }
