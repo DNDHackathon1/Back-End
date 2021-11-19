@@ -22,8 +22,7 @@ public class PartyController {
     @PostMapping("/")
     public ResponseEntity save(@RequestBody PartyDTO party) {
         try{
-            PartySaveDTO partySaveDTO = new PartySaveDTO(partyService.save(party));
-            return new ResponseEntity(new Message(partySaveDTO, "party 생성 성공"), HttpStatus.OK);
+            return new ResponseEntity(new Message(partyService.save(party), "party 생성 성공"), HttpStatus.OK);
         }catch (Exception exception) {
             return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
         }
