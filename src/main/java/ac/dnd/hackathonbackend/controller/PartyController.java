@@ -33,4 +33,13 @@ public class PartyController {
             return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/not")
+    public ResponseEntity getPartiesByNotActive() {
+        try{
+            return new ResponseEntity(new Message(partyService.getListByNotActive(), "참여 불가능 party List 가져오기 성공"), HttpStatus.OK);
+        } catch(Exception exception) {
+            return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
