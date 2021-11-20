@@ -1,6 +1,5 @@
 package ac.dnd.hackathonbackend.domain.reply.service;
 
-import ac.dnd.hackathonbackend.domain.party.model.PartyIdDto;
 import ac.dnd.hackathonbackend.domain.reply.model.RepliesDto;
 import ac.dnd.hackathonbackend.domain.reply.model.ReplyDto;
 import ac.dnd.hackathonbackend.domain.reply.model.ReplyInPartyDto;
@@ -41,8 +40,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public RepliesDto get(PartyIdDto dto) {
-        final PartyEntity partyEntity = partyRepository.findById(dto.getPartyId())
+    public RepliesDto get(Long partyId) {
+        final PartyEntity partyEntity = partyRepository.findById(partyId)
             .orElseThrow(() -> new IllegalArgumentException("해당하는 방(파티)을 찾을 수 없습니다."));
         final List<ReplyEntity> replies = replyRepository.findAllByParty(partyEntity);
         return RepliesDto.builder()

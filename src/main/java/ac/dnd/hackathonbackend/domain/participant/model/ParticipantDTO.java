@@ -2,8 +2,10 @@ package ac.dnd.hackathonbackend.domain.participant.model;
 
 import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ParticipantDTO {
     private UserRole role;
     private Long userId;

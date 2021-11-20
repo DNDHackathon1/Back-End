@@ -5,7 +5,6 @@ import ac.dnd.hackathonbackend.domain.participant.service.ParticipantService;
 import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
-import ac.dnd.hackathonbackend.domain.user.model.UserGoalDto;
 import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
@@ -44,20 +43,20 @@ public class PartyServiceImpl implements PartyService {
         ParticipantDTO participantDTO = new ParticipantDTO(
                 UserRole.OWNER,
                 party.getUserId(),
-                party.getId()
+                party.getPartyId()
         );
         participantService.save(participantDTO);
         return new PartySaveDTO(partyRepository.save(partyEntity).getId());
     }
 
     @Override
-    public PartiesDTO getListByActive(UserGoalDto dto) {
+    public PartiesDTO getListByActive(Integer goalTime) {
         List<PartyEntity> parties = partyRepository.findAllByActive(true);
         // 1. 시작 시간 기준이 최우선
         // 2. 시작 시간 같다면 목표치 차이가 크지 않은 방이 우선 노출
         parties.sort((prev, next) -> {
-            int prevDiff = Math.abs(dto.getGoalTime() - prev.getGoalTime());
-            int nextDiff = Math.abs(dto.getGoalTime() - next.getGoalTime());
+            int prevDiff = Math.abs(goalTime - prev.getGoalTime());
+            int nextDiff = Math.abs(goalTime - next.getGoalTime());
             if (prev.getStartTime().equals(next.getStartTime())) {
                 return prevDiff < nextDiff ? -1 : 1;
             }

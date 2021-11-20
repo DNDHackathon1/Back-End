@@ -1,13 +1,13 @@
 package ac.dnd.hackathonbackend.domain.party.model;
 
-import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PartyDTO {
-    private Long id;
+    private Long partyId;
     private Long userId;
     private String title;
     private String contents;
@@ -15,8 +15,8 @@ public class PartyDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public PartyDTO(Long id, Long userId, String title, String contents, Integer goalTime, LocalDateTime startTime, LocalDateTime endTime) {
-        this.id = id;
+    public PartyDTO(Long partyId, Long userId, String title, String contents, Integer goalTime, LocalDateTime startTime, LocalDateTime endTime) {
+        this.partyId = partyId;
         this.userId = userId;
         this.title = title;
         this.contents = contents;
