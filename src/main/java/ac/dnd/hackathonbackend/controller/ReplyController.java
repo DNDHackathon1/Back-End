@@ -1,6 +1,5 @@
 package ac.dnd.hackathonbackend.controller;
 
-import ac.dnd.hackathonbackend.domain.party.model.PartyIdDto;
 import ac.dnd.hackathonbackend.domain.reply.model.ReplyDto;
 import ac.dnd.hackathonbackend.domain.reply.service.ReplyService;
 import ac.dnd.hackathonbackend.util.Message;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -34,9 +34,9 @@ public class ReplyController {
 
     @ApiOperation("댓글 조회")
     @GetMapping
-    public ResponseEntity readReply(@RequestBody @Valid PartyIdDto dto) {
+    public ResponseEntity readReply(@RequestParam @Valid Long partyId) {
         try {
-            return new ResponseEntity(new Message(replyService.get(dto), "댓글 조회 성공"), HttpStatus.OK);
+            return new ResponseEntity(new Message(replyService.get(partyId), "댓글 조회 성공"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new Message(null, e.getMessage()), HttpStatus.BAD_REQUEST);
         }

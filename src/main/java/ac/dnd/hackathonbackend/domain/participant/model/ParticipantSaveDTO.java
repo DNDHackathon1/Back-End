@@ -1,15 +1,14 @@
 package ac.dnd.hackathonbackend.domain.participant.model;
 
-import ac.dnd.hackathonbackend.domain.party.model.PartyReadDTO;
-import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.ParticipantEntity;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
-import lombok.Getter;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ParticipantSaveDTO {
     private List<ParticipantReadDTO> participantReadDTOS;
     private Long partyId;

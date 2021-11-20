@@ -1,12 +1,14 @@
 package ac.dnd.hackathonbackend.domain.party.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class PartySaveDTO {
+@NoArgsConstructor
+public class PartySaveResDTO {
     private Long id;
 
-    public PartySaveDTO(Long id) {
+    public PartySaveResDTO(Long id) {
         this.id = id;
     }
 }
