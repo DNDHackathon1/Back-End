@@ -23,7 +23,7 @@ public class PartyController {
     private final PartyService partyService;
 
     @ApiOperation("파티 생성")
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity save(@RequestBody PartyDTO party) {
         try{
             return new ResponseEntity(new Message(partyService.save(party), "party 생성 성공"), HttpStatus.OK);
@@ -33,7 +33,7 @@ public class PartyController {
     }
 
     @ApiOperation("참여 가능 파티 리스트 가져오기")
-    @GetMapping("/")
+    @GetMapping("/active")
     public ResponseEntity getPartiesByActive(@RequestBody @Valid UserGoalDto dto) {
         try{
             return new ResponseEntity(new Message(partyService.getListByActive(dto), "참여 가능 party List 가져오기 성공"), HttpStatus.OK);
@@ -43,7 +43,7 @@ public class PartyController {
     }
 
     @ApiOperation("참여 불가능 가티 리스트 가져오기")
-    @GetMapping("/not")
+    @GetMapping("/inactivate")
     public ResponseEntity getPartiesByNotActzive() {
         try{
             return new ResponseEntity(new Message(partyService.getListByNotActive(), "참여 불가능 party List 가져오기 성공"), HttpStatus.OK);

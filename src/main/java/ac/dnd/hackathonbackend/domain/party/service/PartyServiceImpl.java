@@ -2,7 +2,6 @@ package ac.dnd.hackathonbackend.domain.party.service;
 
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantDTO;
 import ac.dnd.hackathonbackend.domain.participant.service.ParticipantService;
-import ac.dnd.hackathonbackend.domain.participant.service.ParticipantServiceImpl;
 import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
@@ -10,22 +9,23 @@ import ac.dnd.hackathonbackend.domain.user.model.UserGoalDto;
 import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Service
 public class PartyServiceImpl implements PartyService {
 
     private final PartyRepository partyRepository;
     private final ParticipantService participantService;
 
+    @Transactional
     @Override
     public PartySaveDTO save(PartyDTO party) {
         PartyEntity partyEntity = PartyEntity.builder()
