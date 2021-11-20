@@ -34,13 +34,13 @@ public class ParticipantServiceImpl implements ParticipantService {
         }
 
         ParticipantEntity participantEntity = ParticipantEntity.builder()
+                .role(participantDTO.getRole())
                 .user(user.get())
                 .party(partyEntity.get())
                 .build();
 
-        List<ParticipantEntity> participantEntities = participantRepository.findAllByParty(partyEntity.get());
         participantRepository.save(participantEntity);
-
+        List<ParticipantEntity> participantEntities = participantRepository.findAllByParty(partyEntity.get());
         return new ParticipantSaveDTO(participantEntities, partyEntity.get());
     }
 
