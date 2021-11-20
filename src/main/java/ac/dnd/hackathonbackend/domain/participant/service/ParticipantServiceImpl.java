@@ -1,7 +1,6 @@
 package ac.dnd.hackathonbackend.domain.participant.service;
 
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantDTO;
-import ac.dnd.hackathonbackend.domain.participant.model.ParticipantReadDTO;
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantSaveDTO;
 import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.ParticipantEntity;
@@ -10,21 +9,22 @@ import ac.dnd.hackathonbackend.persistence.entity.UserEntity;
 import ac.dnd.hackathonbackend.persistence.repository.ParticipantRepository;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
 import ac.dnd.hackathonbackend.persistence.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Service
 public class ParticipantServiceImpl implements ParticipantService {
 
     private final ParticipantRepository participantRepository;
     private final UserRepository userRepository;
     private final PartyRepository partyRepository;
 
+    @Transactional
     @Override
     public ParticipantSaveDTO save(ParticipantDTO participantDTO) {
         Optional<UserEntity> user = userRepository.findById(participantDTO.getUserId());
@@ -58,9 +58,11 @@ public class ParticipantServiceImpl implements ParticipantService {
         if (participantDTO.getRole() == UserRole.OWNER) {
             participantRepository.deleteAllByParty(party.get());
             partyRepository.delete(party.get());
+        } else if (participantDTO.getRole() == UserRole.USER) {
+            participantRepository.deleteByUserIdAndPartyId(user.get().getId(), party.get().getId());
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 UserRole 입니다.");
         }
-
-        participantRepository.deleteByUserIdAndPartyId(user.get().getId(), party.get().getId());
         return participantDTO;
     }
 }
