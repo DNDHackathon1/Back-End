@@ -1,14 +1,19 @@
 package ac.dnd.hackathonbackend.controller;
 
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
-import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
 import ac.dnd.hackathonbackend.domain.party.service.PartyService;
+import ac.dnd.hackathonbackend.domain.user.model.UserGoalDto;
 import ac.dnd.hackathonbackend.util.Message;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/party")
@@ -29,9 +34,9 @@ public class PartyController {
 
     @ApiOperation("참여 가능 파티 리스트 가져오기")
     @GetMapping("/")
-    public ResponseEntity getPartiesByActive() {
+    public ResponseEntity getPartiesByActive(@RequestBody @Valid UserGoalDto dto) {
         try{
-            return new ResponseEntity(new Message(partyService.getListByActive(), "참여 가능 party List 가져오기 성공"), HttpStatus.OK);
+            return new ResponseEntity(new Message(partyService.getListByActive(dto), "참여 가능 party List 가져오기 성공"), HttpStatus.OK);
         } catch(Exception exception) {
             return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
         }
