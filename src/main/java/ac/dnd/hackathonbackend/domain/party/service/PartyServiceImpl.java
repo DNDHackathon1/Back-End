@@ -3,12 +3,15 @@ package ac.dnd.hackathonbackend.domain.party.service;
 import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
+import ac.dnd.hackathonbackend.domain.user.model.UserGoalDto;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,14 +37,28 @@ public class PartyServiceImpl implements PartyService{
     }
 
     @Override
-    public PartiesDTO getListByActive() {
+    public PartiesDTO getListByActive(UserGoalDto dto) {
         List<PartyEntity> parties = partyRepository.findAllByActive(true);
-        return new PartiesDTO(parties);
+        // 1. 시작 시간 기준이 최우선
+        // 2. 시작 시간 같다면 목표치 차이가 크지 않은 방이 우선 노출
+        parties.sort((prev, next) -> {
+            int prevDiff = Math.abs(dto.getGoalTime() - prev.getGoalTime());
+            int nextDiff = Math.abs(dto.getGoalTime() - next.getGoalTime());
+            if (prev.getStartTime().equals(next.getStartTime())) {
+                return prevDiff < nextDiff ? -1 : 1;
+            }
+            return prev.getStartTime().isBefore(next.getStartTime()) ? -1 : 1;
+        });
+        // 현재 시간 이후에 참여할 수 있는 방만 필터링
+        return new PartiesDTO(parties.stream()
+            .filter(party -> party.getStartTime().isAfter(LocalDateTime.now()))
+            .collect(Collectors.toList()));
     }
 
     @Override
     public PartiesDTO getListByNotActive() {
         List<PartyEntity> parties = partyRepository.findAllByActive(false);
+        Collections.reverse(parties);
         return new PartiesDTO(parties);
     }
 }
