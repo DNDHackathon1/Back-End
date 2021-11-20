@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface ParticipantRepository extends JpaRepository<ParticipantEntity, Long> {
     List<ParticipantEntity> findAllByParty(PartyEntity partyEntity);
-    void removeByUserIdAndPartyId(Long userId, Long partyId);
     void deleteByUserIdAndPartyId(Long userId, Long partyId);
 }
