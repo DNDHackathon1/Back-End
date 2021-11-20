@@ -1,23 +1,30 @@
 package ac.dnd.hackathonbackend.domain.party.service;
 
+import ac.dnd.hackathonbackend.domain.participant.model.ParticipantDTO;
+import ac.dnd.hackathonbackend.domain.participant.service.ParticipantService;
+import ac.dnd.hackathonbackend.domain.participant.service.ParticipantServiceImpl;
 import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
 import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
 import ac.dnd.hackathonbackend.domain.user.model.UserGoalDto;
+import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PartyServiceImpl implements PartyService{
+public class PartyServiceImpl implements PartyService {
 
     private final PartyRepository partyRepository;
+    private final ParticipantService participantService;
 
     @Override
     public PartySaveDTO save(PartyDTO party) {
@@ -30,9 +37,16 @@ public class PartyServiceImpl implements PartyService{
                 .active(true)
                 .build();
 
-        if(party.getEndTime().isBefore(party.getStartTime())) {
+        if (party.getEndTime().isBefore(party.getStartTime())) {
             throw new IllegalArgumentException("시작 시간이 종료 시간보다 뒤에 있을 때의 에러");
         }
+
+        ParticipantDTO participantDTO = new ParticipantDTO(
+                UserRole.OWNER,
+                party.getUserId(),
+                party.getId()
+        );
+        participantService.save(participantDTO);
         return new PartySaveDTO(partyRepository.save(partyEntity).getId());
     }
 
@@ -51,8 +65,8 @@ public class PartyServiceImpl implements PartyService{
         });
         // 현재 시간 이후에 참여할 수 있는 방만 필터링
         return new PartiesDTO(parties.stream()
-            .filter(party -> party.getStartTime().isAfter(LocalDateTime.now()))
-            .collect(Collectors.toList()));
+                .filter(party -> party.getStartTime().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList()));
     }
 
     @Override

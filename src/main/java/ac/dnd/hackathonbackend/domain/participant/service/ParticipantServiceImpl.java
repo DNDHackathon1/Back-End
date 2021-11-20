@@ -3,6 +3,7 @@ package ac.dnd.hackathonbackend.domain.participant.service;
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantDTO;
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantReadDTO;
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantSaveDTO;
+import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.ParticipantEntity;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.entity.UserEntity;
@@ -34,13 +35,13 @@ public class ParticipantServiceImpl implements ParticipantService {
         }
 
         ParticipantEntity participantEntity = ParticipantEntity.builder()
+                .role(participantDTO.getRole())
                 .user(user.get())
                 .party(partyEntity.get())
                 .build();
 
-        List<ParticipantEntity> participantEntities = participantRepository.findAllByParty(partyEntity.get());
         participantRepository.save(participantEntity);
-
+        List<ParticipantEntity> participantEntities = participantRepository.findAllByParty(partyEntity.get());
         return new ParticipantSaveDTO(participantEntities, partyEntity.get());
     }
 
@@ -53,6 +54,12 @@ public class ParticipantServiceImpl implements ParticipantService {
         if (user.isEmpty() || party.isEmpty()){
             throw new IllegalArgumentException("party 또는 user의 정보가 올바르지 않습니다.");
         }
+
+        if (participantDTO.getRole() == UserRole.OWNER) {
+            participantRepository.deleteAllByParty(party.get());
+            partyRepository.delete(party.get());
+        }
+
         participantRepository.deleteByUserIdAndPartyId(user.get().getId(), party.get().getId());
         return participantDTO;
     }
