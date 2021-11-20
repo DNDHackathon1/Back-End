@@ -2,8 +2,10 @@ package ac.dnd.hackathonbackend.domain.participant.model;
 
 import ac.dnd.hackathonbackend.persistence.entity.ParticipantEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ParticipantReadDTO {
     Long userId;
     String profileImageUrl;

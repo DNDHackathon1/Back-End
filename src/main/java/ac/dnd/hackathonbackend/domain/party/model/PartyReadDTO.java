@@ -4,8 +4,10 @@ import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class PartyReadDTO {
     private Long id;
     private String title;
