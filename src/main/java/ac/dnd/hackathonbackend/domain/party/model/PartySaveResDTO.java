@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PartySaveDTO {
+public class PartySaveResDTO {
     private Long id;
 
-    public PartySaveDTO(Long id) {
+    public PartySaveResDTO(Long id) {
         this.id = id;
     }
 }

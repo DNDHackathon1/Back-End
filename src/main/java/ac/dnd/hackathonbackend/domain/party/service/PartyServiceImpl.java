@@ -3,8 +3,8 @@ package ac.dnd.hackathonbackend.domain.party.service;
 import ac.dnd.hackathonbackend.domain.participant.model.ParticipantDTO;
 import ac.dnd.hackathonbackend.domain.participant.service.ParticipantService;
 import ac.dnd.hackathonbackend.domain.party.model.PartiesDTO;
-import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
-import ac.dnd.hackathonbackend.domain.party.model.PartySaveDTO;
+import ac.dnd.hackathonbackend.domain.party.model.PartySaveReqDTO;
+import ac.dnd.hackathonbackend.domain.party.model.PartySaveResDTO;
 import ac.dnd.hackathonbackend.domain.user.model.UserRole;
 import ac.dnd.hackathonbackend.persistence.entity.PartyEntity;
 import ac.dnd.hackathonbackend.persistence.repository.PartyRepository;
@@ -26,7 +26,7 @@ public class PartyServiceImpl implements PartyService {
 
     @Transactional
     @Override
-    public PartySaveDTO save(PartyDTO party) {
+    public PartySaveResDTO save(PartySaveReqDTO party) {
         PartyEntity partyEntity = PartyEntity.builder()
                 .title(party.getTitle())
                 .contents(party.getContents())
@@ -40,13 +40,15 @@ public class PartyServiceImpl implements PartyService {
             throw new IllegalArgumentException("시작 시간이 종료 시간보다 뒤에 있을 때의 에러");
         }
 
+        Long partyId = partyRepository.save(partyEntity).getId();
+
         ParticipantDTO participantDTO = new ParticipantDTO(
                 UserRole.OWNER,
                 party.getUserId(),
-                party.getPartyId()
+                partyId
         );
         participantService.save(participantDTO);
-        return new PartySaveDTO(partyRepository.save(partyEntity).getId());
+        return new PartySaveResDTO(partyId);
     }
 
     @Override

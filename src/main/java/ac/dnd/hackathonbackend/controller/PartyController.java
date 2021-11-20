@@ -1,6 +1,7 @@
 package ac.dnd.hackathonbackend.controller;
 
 import ac.dnd.hackathonbackend.domain.party.model.PartyDTO;
+import ac.dnd.hackathonbackend.domain.party.model.PartySaveReqDTO;
 import ac.dnd.hackathonbackend.domain.party.service.PartyService;
 import ac.dnd.hackathonbackend.util.Message;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,7 @@ public class PartyController {
 
     @ApiOperation("파티 생성")
     @PostMapping
-    public ResponseEntity save(@RequestBody PartyDTO party) {
+    public ResponseEntity save(@RequestBody PartySaveReqDTO party) {
         try{
             return new ResponseEntity(new Message(partyService.save(party), "party 생성 성공"), HttpStatus.OK);
         }catch (Exception exception) {
