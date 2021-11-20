@@ -55,7 +55,8 @@ public class ParticipantServiceImpl implements ParticipantService {
             throw new IllegalArgumentException("party 또는 user의 정보가 올바르지 않습니다.");
         }
 
-        if (participantDTO.getRole() == UserRole.OWNER){
+        if (participantDTO.getRole() == UserRole.OWNER) {
+            participantRepository.deleteAllByParty(party.get());
             partyRepository.delete(party.get());
         }
 

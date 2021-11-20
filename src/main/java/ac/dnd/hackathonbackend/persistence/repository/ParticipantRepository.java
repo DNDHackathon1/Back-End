@@ -10,4 +10,5 @@ import java.util.List;
 public interface ParticipantRepository extends JpaRepository<ParticipantEntity, Long> {
     List<ParticipantEntity> findAllByParty(PartyEntity partyEntity);
     void deleteByUserIdAndPartyId(Long userId, Long partyId);
+    void deleteAllByParty(PartyEntity party);
 }
