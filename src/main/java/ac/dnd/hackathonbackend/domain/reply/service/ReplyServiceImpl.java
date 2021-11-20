@@ -27,6 +27,7 @@ public class ReplyServiceImpl implements ReplyService {
     private final PartyRepository partyRepository;
     private final ReplyRepository replyRepository;
 
+    @Transactional
     @Override
     public ReplyDto create(ReplyDto dto) {
         final UserEntity userEntity = userRepository.findById(dto.getUserId())
