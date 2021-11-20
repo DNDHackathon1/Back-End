@@ -12,6 +12,7 @@ import ac.dnd.hackathonbackend.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +42,18 @@ public class ParticipantServiceImpl implements ParticipantService {
         participantRepository.save(participantEntity);
 
         return new ParticipantSaveDTO(participantEntities, partyEntity.get());
+    }
+
+    @Override
+    @Transactional
+    public ParticipantDTO delete(ParticipantDTO participantDTO) {
+        Optional<PartyEntity> party = partyRepository.findById(participantDTO.getPartyId());
+        Optional<UserEntity> user = userRepository.findById(participantDTO.getUserId());
+
+        if (user.isEmpty() || party.isEmpty()){
+            throw new IllegalArgumentException("party 또는 user의 정보가 올바르지 않습니다.");
+        }
+        participantRepository.deleteByUserIdAndPartyId(user.get().getId(), party.get().getId());
+        return participantDTO;
     }
 }

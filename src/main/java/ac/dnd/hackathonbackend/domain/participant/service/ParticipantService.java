@@ -5,4 +5,5 @@ import ac.dnd.hackathonbackend.domain.participant.model.ParticipantSaveDTO;
 
 public interface ParticipantService {
      ParticipantSaveDTO save (ParticipantDTO participantDTO);
+     ParticipantDTO delete (ParticipantDTO ParticipantDTO);
 }

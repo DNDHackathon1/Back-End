@@ -24,8 +24,17 @@ public class ParticipantController {
     @PostMapping("/")
     public ResponseEntity save(@RequestBody ParticipantDTO participantDTO) {
         try{
-            System.out.println(participantDTO.getRole());
             return new ResponseEntity(new Message(participantService.save(participantDTO), "party 생성 성공"), HttpStatus.OK);
+        }catch (Exception exception) {
+            return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation("파티 나가기")
+    @PostMapping("/delete")
+    public ResponseEntity delete(@RequestBody ParticipantDTO participantDTO) {
+        try{
+            return new ResponseEntity(new Message(participantService.delete(participantDTO), "party 나가기 성공"), HttpStatus.OK);
         }catch (Exception exception) {
             return new ResponseEntity(new Message(null, exception.getMessage()), HttpStatus.BAD_REQUEST);
         }
